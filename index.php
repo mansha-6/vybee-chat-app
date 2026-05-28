@@ -29,10 +29,10 @@ $base_href = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/'
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Boxicons Icons -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=8.0">
+    <link rel="stylesheet" href="style.css?v=9.0">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Frontend JS controller -->
-    <script src="chat.js?v=2.1" defer></script>
+    <script src="chat.js?v=3.0" defer></script>
 </head>
 <body class="chat-body" 
  data-user-id="<?php echo $current_user_id; ?>" 

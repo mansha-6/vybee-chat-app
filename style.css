@@ -626,11 +626,55 @@ html, body {
 
 .contact-item .contact-details {
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+    overflow: visible;
+    gap: 12px;
+    min-width: 0;
+}
+
+.contact-item .contact-main-info {
+    display: flex;
     flex-direction: column;
     flex-grow: 1;
-    overflow: hidden;
-    gap: 2px;
     min-width: 0;
+    gap: 3px;
+    overflow: hidden;
+}
+
+.contact-item .contact-side-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-shrink: 0;
+    gap: 5px;
+    min-width: 55px;
+    text-align: right;
+}
+
+.contact-item .contact-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.contact-item .contact-last-time {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.contact-item .contact-last-msg {
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
 .contact-item .contact-name {
@@ -1380,9 +1424,9 @@ html, body {
 /* ─────────────────────────────────────────────────────────── */
 /* REAL-TIME UNREAD NOTIFICATION BADGES */
 .unread-badge {
-    min-width: 18px;
-    height: 18px;
-    background: linear-gradient(135deg, #ef4444 0%, #f43f5e 100%);
+    min-width: 19px;
+    height: 19px;
+    background: linear-gradient(135deg, #09d261 0%, #05a64b 100%);
     border-radius: 50%;
     color: #ffffff;
     font-size: 10px;
@@ -1390,20 +1434,17 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
-    padding: 0 4px;
-    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
-    animation: badgePulse 2s infinite ease-in-out;
+    padding: 0 4.5px;
+    box-shadow: 0 0 0 0 rgba(9, 210, 97, 0.4);
+    animation: badgeGlow 2s infinite ease-in-out;
 }
 
-@keyframes badgePulse {
+@keyframes badgeGlow {
     0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+        box-shadow: 0 0 0 0 rgba(9, 210, 97, 0.4);
     }
     50% {
-        transform: scale(1.1);
-        box-shadow: 0 2px 14px rgba(239, 68, 68, 0.7);
+        box-shadow: 0 0 8px 3px rgba(9, 210, 97, 0.6);
     }
 }
 

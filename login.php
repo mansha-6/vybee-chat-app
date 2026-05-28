@@ -29,9 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($username) || empty($password)) {
         $error = 'Both username and password are required.';
     } else {
-        // Fetch user from DB
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?"); //stmt=statement mainly used to stored the prepared query.
-        $stmt->execute([$username]); //SELECT * FROM users WHERE username='john'
+        // Fetch user from DB by username or phone number
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ? OR phone = ?"); //stmt=statement mainly used to stored the prepared query.
+        $stmt->execute([$username, $username]); //SELECT * FROM users WHERE username='john' OR phone='john'
         $user = $stmt->fetch(); //gets a single row.    
         
         if ($user && password_verify($password, $user['password'])) { // $users = did users exist amd password_verify() = entered password matches stored hash passwords.
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=6.0">
+    <link rel="stylesheet" href="style.css?v=9.0">
 </head>
 <body class="auth-body">
     <div class="auth-overlay"></div>

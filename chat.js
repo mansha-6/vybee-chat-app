@@ -271,12 +271,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="contact-item ${isActive}" data-id="${user.id}" data-username="${user.username}">
                                 <div class="contact-avatar-initials">${initials}</div> 
                                 <div class="contact-details">
-                                    <div class="contact-meta-row">
+                                    <div class="contact-main-info">
                                         <span class="contact-name">${user.username}</span>
-                                        <span class="contact-last-time">${lastTimeFormatted}</span>
-                                    </div>
-                                    <div class="contact-meta-row" style="margin-top: 3px;">
                                         <div class="contact-last-msg">${lastMsg}</div>
+                                    </div>
+                                    <div class="contact-side-info">
+                                        <span class="contact-last-time">${lastTimeFormatted}</span>
                                         ${badgeHtml}
                                     </div>
                                 </div>
@@ -389,12 +389,12 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="contact-item ${isActive}" data-room-id="${room.id}" data-room-name="${room.name}">
                                 <div class="contact-avatar-initials group-avatar">${initials}</div> 
                                 <div class="contact-details">
-                                    <div class="contact-meta-row">
+                                    <div class="contact-main-info">
                                         <span class="contact-name">${room.name}</span>
-                                        <span class="contact-last-time">${lastTimeFormatted}</span>
-                                    </div>
-                                    <div class="contact-meta-row" style="margin-top: 3px;">
                                         <div class="contact-last-msg">${lastMsg}</div>
+                                    </div>
+                                    <div class="contact-side-info">
+                                        <span class="contact-last-time">${lastTimeFormatted}</span>
                                         ${badgeHtml}
                                     </div>
                                 </div>
