@@ -260,11 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         // Notification Badge computation
                         let badgeHtml = '';
-                        if (user.last_time && activeReceiverId !== parseInt(user.id)) {
-                            const lastSeenTime = seenMessages['user_' + user.id] || '';
-                            if (!lastSeenTime || new Date(user.last_time) > new Date(lastSeenTime)) {
-                                badgeHtml = `<span class="unread-badge">1</span>`;
-                            }
+                        if (user.unread_count && parseInt(user.unread_count) > 0 && activeReceiverId !== parseInt(user.id)) {
+                            badgeHtml = `<span class="unread-badge">${user.unread_count}</span>`;
                         }
 
                         html += `
@@ -343,8 +340,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load Chat Rooms (Groups)
     function loadRooms(callback = null) {
+        const seenTimesStr = JSON.stringify(seenMessages);
         $.ajax({
-            url: 'api.php?action=get_rooms',
+            url: 'api.php?action=get_rooms&seen_times=' + encodeURIComponent(seenTimesStr),
             dataType: 'json',
             success: function(result) {
                 if (result.status === 'success') {
@@ -378,11 +376,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         // Notification Badge computation
                         let badgeHtml = '';
-                        if (room.last_time && activeRoomId !== parseInt(room.id)) {
-                            const lastSeenTime = seenMessages['room_' + room.id] || '';
-                            if (!lastSeenTime || new Date(room.last_time) > new Date(lastSeenTime)) {
-                                badgeHtml = `<span class="unread-badge">1</span>`;
-                            }
+                        if (room.unread_count && parseInt(room.unread_count) > 0 && activeRoomId !== parseInt(room.id)) {
+                            badgeHtml = `<span class="unread-badge">${room.unread_count}</span>`;
                         }
 
                         html += `

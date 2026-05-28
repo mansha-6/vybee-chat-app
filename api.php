@@ -24,16 +24,22 @@ if ($action === 'get_users') {
     
     if ($search !== '') { // if the user type something else then return false as empty string LIKE = pattern matching LIKE '%raj%'Matches:raj,rajesh,raj123,myraj
     //this statement executes if the search exists
-        $stmt = $pdo->prepare("SELECT u.id, u.username, CASE WHEN m.is_deleted = 1 THEN 'This message was deleted' ELSE m.message END AS last_message, m.created_at AS last_time 
+        $stmt = $pdo->prepare("SELECT u.id, u.username, 
+        CASE WHEN m.is_deleted = 1 THEN 'This message was deleted' ELSE m.message END AS last_message, 
+        m.created_at AS last_time,
+        (SELECT COUNT(*) FROM messages WHERE user_id = u.id AND receiver_id = ? AND seen = 0 AND is_deleted = 0) AS unread_count
         FROM users u 
         LEFT JOIN messages m
         ON m.id = 
         ( SELECT id FROM messages WHERE (user_id = ? AND receiver_id = u.id) OR (user_id = u.id AND receiver_id = ?) ORDER BY created_at DESC LIMIT 1 ) 
         WHERE u.id != ? AND u.username LIKE ? ORDER BY u.username ASC"); // ? = placeholder and WHERE id != ? means Get all users whose ID is NOT the currently logged-in user's ID.
-        $stmt->execute([$user_id, $user_id, $user_id, "%$search%"]); //% is used for the partially - any no of characters
+        $stmt->execute([$user_id, $user_id, $user_id, $user_id, "%$search%"]); //% is used for the partially - any no of characters
     } 
     else { //if no search exists and distinct is used to remove the duplicates
-        $stmt = $pdo->prepare("SELECT u.id, u.username, CASE WHEN m.is_deleted = 1 THEN 'This message was deleted' ELSE m.message END AS last_message, m.created_at AS last_time 
+        $stmt = $pdo->prepare("SELECT u.id, u.username, 
+        CASE WHEN m.is_deleted = 1 THEN 'This message was deleted' ELSE m.message END AS last_message, 
+        m.created_at AS last_time,
+        (SELECT COUNT(*) FROM messages WHERE user_id = u.id AND receiver_id = ? AND seen = 0 AND is_deleted = 0) AS unread_count
         FROM users u
         INNER JOIN messages m 
         ON m.id = 
@@ -42,7 +48,7 @@ if ($action === 'get_users') {
         ORDER BY last_time DESC
         "); // WHERE u.id != ? Exclude myself. Show only users having chat history.
 
-        $stmt->execute([ $user_id, $user_id, $user_id]); //Three placeholders.1 sender check,2 receiver check,3 self exclusion (Find everyone who has chat relationship with me.)
+        $stmt->execute([$user_id, $user_id, $user_id, $user_id]); //Four placeholders.
     }
     
     $users = $stmt->fetchAll(); //get all the rows
@@ -66,6 +72,34 @@ if ($action === 'get_rooms') {
         ORDER BY r.name ASC");
     $stmt->execute();
     $rooms = $stmt->fetchAll();
+    
+    // Parse seen times from client to compute actual unread counts in rooms
+    $seen_times = [];
+    if (isset($_GET['seen_times'])) {
+        $seen_times = json_decode($_GET['seen_times'], true);
+        if (!is_array($seen_times)) {
+            $seen_times = [];
+        }
+    }
+    
+    // Enrich room objects with unread counts
+    foreach ($rooms as &$room) {
+        $room_key = 'room_' . $room['id'];
+        $last_seen = $seen_times[$room_key] ?? '';
+        
+        if (!empty($last_seen) && !empty($room['last_time'])) {
+            $count_stmt = $pdo->prepare("SELECT COUNT(*) FROM messages WHERE room_id = ? AND created_at > ? AND user_id != ? AND is_deleted = 0");
+            $count_stmt->execute([$room['id'], $last_seen, $user_id]);
+            $room['unread_count'] = intval($count_stmt->fetchColumn());
+        } elseif (empty($last_seen) && !empty($room['last_time'])) {
+            // If they have never opened the room, count all messages sent by others
+            $count_stmt = $pdo->prepare("SELECT COUNT(*) FROM messages WHERE room_id = ? AND user_id != ? AND is_deleted = 0");
+            $count_stmt->execute([$room['id'], $user_id]);
+            $room['unread_count'] = intval($count_stmt->fetchColumn());
+        } else {
+            $room['unread_count'] = 0;
+        }
+    }
     
     echo json_encode([
         'status' => 'success',
@@ -129,6 +163,10 @@ if ($action === 'get_messages') {
             'data' => $messages
         ]);
     } elseif ($receiver_id > 0) {
+        // Mark all received messages in this conversation as seen
+        $update_stmt = $pdo->prepare("UPDATE messages SET seen = 1 WHERE user_id = ? AND receiver_id = ? AND seen = 0");
+        $update_stmt->execute([$receiver_id, $user_id]);
+
         // Fetch 1-on-1 direct messages (including sender's username)
         $stmt = $pdo->prepare("SELECT m.*, u.username FROM messages m 
             JOIN users u ON m.user_id = u.id 

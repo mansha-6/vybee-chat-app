@@ -44,6 +44,7 @@ CREATE TABLE messages (
     room_id INT DEFAULT NULL,
     message TEXT NOT NULL,
     is_deleted TINYINT(1) DEFAULT 0,
+    seen TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (receiver_id) REFERENCES users(id) ON DELETE CASCADE,

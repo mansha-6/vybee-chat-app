@@ -32,7 +32,7 @@ $base_href = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/'
     <link rel="stylesheet" href="style.css?v=10.0">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Frontend JS controller -->
-    <script src="chat.js?v=3.0" defer></script>
+    <script src="chat.js?v=4.0" defer></script>
 </head>
 <body class="chat-body" 
  data-user-id="<?php echo $current_user_id; ?>" 
