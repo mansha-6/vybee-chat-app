@@ -1426,25 +1426,14 @@ html, body {
 .unread-badge {
     min-width: 19px;
     height: 19px;
-    background: linear-gradient(135deg, #00b894 0%, #00a884 100%);
+    background: #00a884; /* Solid matte WhatsApp green/teal */
     border-radius: 50%;
     color: #ffffff;
-    font-size: 10px;
-    font-weight: 800;
+    font-size: 10.5px;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 4.5px;
-    box-shadow: 0 0 0 0 rgba(0, 168, 132, 0.3);
-    animation: badgeGlow 2s infinite ease-in-out;
-}
-
-@keyframes badgeGlow {
-    0%, 100% {
-        box-shadow: 0 0 0 0 rgba(0, 168, 132, 0.3);
-    }
-    50% {
-        box-shadow: 0 0 6px 2px rgba(0, 168, 132, 0.5);
-    }
+    padding: 0 5px;
 }
 

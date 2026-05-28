@@ -29,7 +29,7 @@ $base_href = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])), '/'
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Boxicons Icons -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=10.0">
+    <link rel="stylesheet" href="style.css?v=11.0">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Frontend JS controller -->
     <script src="chat.js?v=4.0" defer></script>
