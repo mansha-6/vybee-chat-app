@@ -502,7 +502,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         cachedUsersJSON = '';
                         loadUsers(searchUsersInput.value.trim());
                     }
+                } else {
+                    alert("Error sending message: " + result.message);
                 }
+            },
+            error: function(xhr, status, error) {
+                alert("Failed to send message. Please ensure you are logged in and your connection is active.");
             }
         });
     });

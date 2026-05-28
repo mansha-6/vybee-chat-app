@@ -35,11 +35,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($password) < 6) {
         $error = 'Password must be at least 6 characters long.';
     } else {
-        // Check if username or email already exists
-        $stmt = $pdo->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
-        $stmt->execute([$username, $email]);
-        if ($stmt->fetch()) { //used to prevent from the duplicate acc
-            $error = 'Username or Email is already registered.';
+        // Check if username, email, or phone number already exists
+        $stmt = $pdo->prepare("SELECT id, username, email, phone FROM users WHERE username = ? OR email = ? OR phone = ?");
+        $stmt->execute([$username, $email, $phone]);
+        $existing = $stmt->fetch();
+        if ($existing) {
+            if ($existing['username'] === $username) {
+                $error = 'Username is already registered. Please log in.';
+            } elseif ($existing['email'] === $email) {
+                $error = 'Email Address is already registered. Please log in.';
+            } else {
+                $error = 'Phone Number is already registered. Please log in.';
+            }
         } else {
             // Hash password securely
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
