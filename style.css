@@ -1426,7 +1426,7 @@ html, body {
 .unread-badge {
     min-width: 19px;
     height: 19px;
-    background: linear-gradient(135deg, #09d261 0%, #05a64b 100%);
+    background: linear-gradient(135deg, #00b894 0%, #00a884 100%);
     border-radius: 50%;
     color: #ffffff;
     font-size: 10px;
@@ -1435,16 +1435,16 @@ html, body {
     align-items: center;
     justify-content: center;
     padding: 0 4.5px;
-    box-shadow: 0 0 0 0 rgba(9, 210, 97, 0.4);
+    box-shadow: 0 0 0 0 rgba(0, 168, 132, 0.3);
     animation: badgeGlow 2s infinite ease-in-out;
 }
 
 @keyframes badgeGlow {
     0%, 100% {
-        box-shadow: 0 0 0 0 rgba(9, 210, 97, 0.4);
+        box-shadow: 0 0 0 0 rgba(0, 168, 132, 0.3);
     }
     50% {
-        box-shadow: 0 0 8px 3px rgba(9, 210, 97, 0.6);
+        box-shadow: 0 0 6px 2px rgba(0, 168, 132, 0.5);
     }
 }
 
